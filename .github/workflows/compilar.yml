@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  diagnostico:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,15 +16,11 @@ jobs:
           mkdir proyecto
           unzip -q AforoTanque_GitHubCloud.zip -d proyecto
 
-      - name: Buscar Gradle
+      - name: Mostrar contenido del proyecto
         run: |
-          GRADLEW=$(find proyecto -name gradlew -type f | head -n 1)
-          chmod +x "$GRADLEW"
-          cd "$(dirname "$GRADLEW")"
-          ./gradlew assembleDebug
-
-      - name: Guardar APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: AforoTanque-APK
-          path: proyecto/**/build/outputs/apk/**/*.apk
+          echo "=== ARCHIVOS EN EL ZIP ==="
+          find proyecto -maxdepth 5 -type f | sort
+          echo "=== BUSCANDO GRADLEW ==="
+          find proyecto -name gradlew -type f
+          echo "=== FIN DEL DIAGNOSTICO ==="
+          
