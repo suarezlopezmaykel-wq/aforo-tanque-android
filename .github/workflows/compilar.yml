@@ -1,0 +1,30 @@
+name: Compilar APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar archivos
+        uses: actions/checkout@v4
+
+      - name: Preparar proyecto
+        run: |
+          mkdir proyecto
+          unzip -q AforoTanque_GitHubCloud.zip -d proyecto
+
+      - name: Buscar Gradle
+        run: |
+          GRADLEW=$(find proyecto -name gradlew -type f | head -n 1)
+          chmod +x "$GRADLEW"
+          cd "$(dirname "$GRADLEW")"
+          ./gradlew assembleDebug
+
+      - name: Guardar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AforoTanque-APK
+          path: proyecto/**/build/outputs/apk/**/*.apk
