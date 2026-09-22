@@ -21,23 +21,23 @@ jobs:
         with:
           gradle-version: '8.13'
 
-     - name: Configurar Java 17
-  run: |
-    cd proyecto
-    sed -i '/android {/a\
-    compileOptions {\
-        sourceCompatibility = JavaVersion.VERSION_17\
-        targetCompatibility = JavaVersion.VERSION_17\
-    }' app/build.gradle.kts
-    sed -i '/android {/a\
-    kotlinOptions {\
-        jvmTarget = "17"\
-    }' app/build.gradle.kts
+      - name: Configurar Java 17
+        run: |
+          cd proyecto
+          sed -i '/android {/a\
+          compileOptions {\
+              sourceCompatibility = JavaVersion.VERSION_17\
+              targetCompatibility = JavaVersion.VERSION_17\
+          }' app/build.gradle.kts
+          sed -i '/android {/a\
+          kotlinOptions {\
+              jvmTarget = "17"\
+          }' app/build.gradle.kts
 
-- name: Compilar APK
-  run: |
-    cd proyecto
-    gradle assembleDebug
+      - name: Compilar APK
+        run: |
+          cd proyecto
+          gradle assembleDebug
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
