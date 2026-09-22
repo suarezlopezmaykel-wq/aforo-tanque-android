@@ -1,4 +1,4 @@
-name: Compilar APK v3
+name: Compilar APK v4
 
 on:
   workflow_dispatch:
@@ -8,39 +8,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Descargar archivos
+      - name: Descargar proyecto
         uses: actions/checkout@v4
 
-      - name: Preparar proyecto
-        run: |
-          mkdir proyecto
-          unzip -q AforoTanque_GitHubCloud.zip -d proyecto
-
-      - name: Instalar Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - name: Configurar Java
+        uses: actions/setup-java@v4
         with:
-          gradle-version: '8.13'
+          distribution: temurin
+          java-version: '17'
 
-      - name: Configurar Java 17
-        run: |
-          cd proyecto
-          sed -i '/android {/a\
-          compileOptions {\
-              sourceCompatibility = JavaVersion.VERSION_17\
-              targetCompatibility = JavaVersion.VERSION_17\
-          }' app/build.gradle.kts
-          sed -i '/android {/a\
-          kotlinOptions {\
-              jvmTarget = "17"\
-          }' app/build.gradle.kts
+      - name: Dar permisos a Gradle
+        run: chmod +x gradlew
 
-      - name: Compilar APK
-        run: |
-          cd proyecto
-          gradle assembleDebug
+      - name: Compilar APK ARMv7
+        run: ./gradlew assembleDebug -PabiFilters=armeabi-v7a
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
         with:
-          name: AforoTanque-APK
-          path: proyecto/app/build/outputs/apk/debug/app-debug.apk
+          name: Aforo-de-tanque-ARMv7
+          path: app/build/outputs/apk/debug/app-debug.apk
