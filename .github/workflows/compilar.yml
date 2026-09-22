@@ -17,8 +17,8 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Dar permisos a Gradle
-        run: chmod +x gradlew
+      - name: Compilar APK ARMv7
+        run: ./gradlew assembleDebug -PabiFilters=armeabi-v7a
 
       - name: Compilar APK ARMv7
         run: ./gradlew assembleDebug -PabiFilters=armeabi-v7a
